@@ -17,7 +17,7 @@ module.exports = function(options) {
         var fp = path.join(options.fixtures, name + ".json"),
             data = {};
         if(fs.existsSync(fp)) {
-          data = require(fp) || {};
+          data = JSON.parse(fs.readFileSync(fp,"utf8")) || {};
         }
         return _.extend(globalData, data);
       },
@@ -61,7 +61,12 @@ module.exports = function(options) {
     if(fs.existsSync(fp)) {
       //partials should be reloade everytime
       glob.sync(options.source + "/shared/**/*.hbs").forEach(function(file) {
-        var basename = parseName(file.slice(path.join(options.source, "shared").length + 1));
+        if(file.indexOf("./") === 0) {
+          file = file.substr(2);
+        }
+        // console.log(file);
+        var basename = parseName(file.slice(path.join(options.source, "./shared").length + 1));
+        // console.log(file, basename, fs.existsSync(file));
         handlebars.registerPartial(basename, fs.readFileSync(file, "utf8"));
       });
       //load main template
