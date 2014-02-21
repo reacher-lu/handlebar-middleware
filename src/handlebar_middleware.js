@@ -55,7 +55,7 @@ module.exports = function(options) {
   
   return function(req, res, next) {
     var name = parseName(req.url),
-        fp = path.resolve(options.source, name + extname),
+        fp = path.join(options.source, name + extname),
         template;
     // console.log(fp, fs.existsSync(fp));
     if(fs.existsSync(fp)) {
