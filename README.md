@@ -1,5 +1,8 @@
+# handlebar-middleware
+
 Handlebars rendering middelware for testing and dev
 
+```
 var hm = require("handlebar_middleware")({
   source: "PATH_TO_HBS_FOLDER",
   fixtures: "PATH_TO_FIXTURES",
@@ -8,3 +11,5 @@ var hm = require("handlebar_middleware")({
 });
 
 var app = connect().use(hm);
+
+```
