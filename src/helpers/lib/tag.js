@@ -1,12 +1,17 @@
 var _ = require("lodash");
 
-exports.scope = {};
+exports.list = function(type) {
+  if(!exports.scope[type]) {
+    exports.scope[type] = [];
+  }
+  return exports.scope[type];
+};
 
 exports.refresh = function(scope) {
   exports.scope = scope || {};
 };
 
-exports.create = function(pos, type) {
+exports.create = function(pos, type, options) {
   var tpl, list;
   switch(type) {
   case "style":
@@ -17,10 +22,17 @@ exports.create = function(pos, type) {
     break;
   }
   return function(src) {
-    exports.scope[type] = exports.scope[type] || [];
-    list = exports.scope[type];
+    options = options || {};
+    list = exports.list(type);
+    var html = _.template(tpl, {src: src});
+    if(options.prefix) {
+      html = options.preifx + html;
+    }
+    if(options.suffix) {
+      html += options.suffix;
+    }
     list.push({
-      html: _.template(tpl, {src: src}),
+      html: html,
       pos: pos
     });
   };
@@ -28,8 +40,30 @@ exports.create = function(pos, type) {
 
 exports.render = function(type) {
   return function() {
-    return exports.scope[type].map(function(def) {
+    var list = exports.list(type);
+    return list.map(function(def) {
       return def.html;
     }).join("\n");
+  };
+};
+
+
+exports.block = function(type) {
+  return function(options) {
+    var list =  exports.list(type);
+    // if(typeof search !== "string") {
+    //   options = search;
+    //   search = null;
+    // }
+    // var prefix, suffix;
+    // prefix = type === "script" ? "<!-- build:js <%= dest %> -->" : "<!-- build:css <%= search ? '(' + search +  ')' : '' %> <%= dest %> -->\n";
+    // suffix = "\n<!-- endbuild -->";
+    
+    list.push({
+      // html: prefix + options.fn(this) + suffix,
+      html: options.fn(this),
+      pos: type === "style" ? "head": "tail"
+    });
+    
   };
 };

@@ -59,6 +59,8 @@ module.exports = function(options) {
   handlebars.registerHelper("script", TAG.create("tail", "script"));
   handlebars.registerHelper("scriptTags", TAG.render("script"));
   handlebars.registerHelper("styleTags", TAG.render("style"));
+  handlebars.registerHelper("scriptBlock", TAG.block("script"));
+  handlebars.registerHelper("styleBlock", TAG.block("style"));
   
   
   return function(req, res, next) {
