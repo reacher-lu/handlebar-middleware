@@ -20,7 +20,7 @@ module.exports = function(options) {
         if(fs.existsSync(fp)) {
           data = JSON.parse(fs.readFileSync(fp,"utf8")) || {};
         }
-        return _.extend(globalData, data);
+        return _.extend(Object.create(globalData), data);
       },
       parseName = function(pathname) {
         var parts = pathname.split("/"),//pathname is part of url
