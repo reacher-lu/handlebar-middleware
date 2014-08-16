@@ -5,14 +5,15 @@ var handlebars = require("handlebars"),
     TAG = require("./helpers/lib/tag"),
     glob = require("glob");
 
+
 module.exports = function(options) {
   // console.log(options);
   if(!options.source) {
     throw new Error("need to assign a folder to hbs source");
   }
-  
+
   options = options || {};
-  
+
   var globalData = options.globalData || {},
       parseData = function(name) {
         var fp = path.join(options.fixtures, name + ".json"),
@@ -38,12 +39,12 @@ module.exports = function(options) {
         return path.join(parts.join(path.sep), name);
       },
       extname = options.extname || ".hbs";
-  
+
   //global data
   if(typeof globalData === "string") {//treat it as a url string
     globalData = require(path.resolve(globalData));
   }
-  
+
   //helpers
   if(options.helpers) {
     glob.sync(options.helpers).forEach(function(file) {
@@ -53,7 +54,7 @@ module.exports = function(options) {
       handlebars.registerHelper(basename, require(path.resolve(fp)));
     });
   }
-  
+
   //register built-in tag helpers
   handlebars.registerHelper("style", TAG.create("head", "style"));
   handlebars.registerHelper("script", TAG.create("tail", "script"));
@@ -61,11 +62,10 @@ module.exports = function(options) {
   handlebars.registerHelper("styleTags", TAG.render("style"));
   handlebars.registerHelper("scriptBlock", TAG.block("script"));
   handlebars.registerHelper("styleBlock", TAG.block("style"));
-  
-  
-  return function(req, res, next) {
-    var name = parseName(req.url),
-        fp = path.join(options.source, name + extname),
+
+
+  return function(name, callback) {
+    var fp = path.join(options.source, name + extname),
         template, data, layout;
     // console.log(fp, fs.existsSync(fp));
     if(fs.existsSync(fp)) {
@@ -83,17 +83,17 @@ module.exports = function(options) {
       });
       //load main template
       template = handlebars.compile(fs.readFileSync(fp, "utf8"));
-      res.setHeader("content-type", "text/html; charset=utf-8");
+    
       data = parseData(name);
-      
+    
       //try to parse layout
       layout = path.join(options.source, "layouts", data.layout + extname);
       if(data.layout && fs.existsSync(layout)) {//render layout
         data.body = template(data);
         template = handlebars.compile(fs.readFileSync(layout, "utf8"));
       }
-      return res.end(template(data));
+      return callback(null, template(data));
     }
-    next();
+    callback(null, false);
   };
 };
