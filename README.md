@@ -13,3 +13,7 @@ var hm = require("handlebar_middleware")({
 var app = connect().use(hm);
 
 ```
+
+
+## Grunt task
+

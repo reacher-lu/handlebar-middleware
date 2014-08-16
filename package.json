@@ -1,8 +1,8 @@
 {
   "name": "handlebar-middleware",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
-  "main": "src/handlebar_middleware.js",
+  "main": "./src",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
