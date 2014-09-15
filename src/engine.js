@@ -62,8 +62,9 @@ module.exports = function(options) {
   handlebars.registerHelper("styleTags", TAG.render("style"));
   handlebars.registerHelper("scriptBlock", TAG.block("script"));
   handlebars.registerHelper("styleBlock", TAG.block("style"));
-
-
+  //mixin other common helpers
+  _.extend(handlebars.helpers, require("diy-handlebars-helpers"));
+  
   return function(name, callback) {
     var fp = path.join(options.source, name + extname),
         template, data, layout;

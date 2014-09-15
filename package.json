@@ -1,6 +1,6 @@
 {
   "name": "handlebar-middleware",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "./src",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/RobinQu/handlebar-middleware",
   "dependencies": {
+    "diy-handlebars-helpers": "^1.0.10",
     "glob": "~3.2.8",
     "handlebars": "~2.0.0-alpha.1",
     "lodash": "^2.4.1",

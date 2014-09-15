@@ -1,10 +1,12 @@
-var engine = require("./engine");
+var engine = require("./engine"),
+    url = require("url");
 
 module.exports = function(options) {
   var render = engine(options);
   
   return function(req, res, next) {
-    render(req.url === "/" ? "/index" : req.url, function(e, resp) {
+    var parsed = url.parse(req.url, true);
+    render(parsed.pathname === "/" ? "/index" : parsed.pathname, function(e, resp) {
       if(e) {
         return next(e);
       }
