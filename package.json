@@ -19,7 +19,7 @@
   "dependencies": {
     "diy-handlebars-helpers": "^1.0.10",
     "glob": "~3.2.8",
-    "handlebars": "~2.0.0-alpha.1",
+    "handlebars": "4.0.4",
     "lodash": "^2.4.1",
     "minimatch": "~0.2.14",
     "request": "~2.33.0",
